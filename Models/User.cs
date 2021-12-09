@@ -14,9 +14,9 @@ namespace Minimal.Models
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public UserGoalTier UserGoalTier { get; set; }
-        
-        public Int16 TotalItemsOwned { get; set; }
-        public Int16 TotalItemsRemoved { get; set; }
+
+        public Int16 TotalItemsOwned { get; set; } = 0;
+        public Int16 TotalItemsRemoved { get; set; } = 0;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     }
@@ -30,6 +30,8 @@ namespace Minimal.Models
         [EnumMember(Value = "Hoarder")]
         Hoarder,
         [EnumMember(Value = "Advanced Minimalist")]
-        Minimalist
+        Minimalist,
+        [EnumMember(Value = "Removed")]
+        Removed
     }
 }

@@ -9,8 +9,7 @@ namespace Minimal.Models
     {
         public Guid CategoryItemId { get; set; }
         public Guid CategoryId { get; set; }
-        public Guid ItemId { get; set; }
-
+        public Guid ItemId { get; set; } 
         public IEnumerable<Item> Item { get; set; }
     }
 }
