@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Minimal.DataAccess;
 using Minimal.Models;
@@ -13,7 +9,7 @@ namespace Minimal.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        CategoryRepository _repo;
+        readonly CategoryRepository _repo;
 
         public CategoryController(CategoryRepository repo)
         {

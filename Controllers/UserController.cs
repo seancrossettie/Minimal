@@ -9,7 +9,7 @@ namespace Minimal.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        UserRepository _repo;
+        readonly UserRepository _repo;
         public UserController(UserRepository repo)
         {
             _repo = repo;
@@ -42,7 +42,7 @@ namespace Minimal.Controllers
 
             if (userToSoftDelete == null)
             {
-                return NotFound($"Could not find user with the id {userId} for updating");
+                return NotFound($"Could not find user with the id {userId} for removal");
             }
 
             var softDeletedUser = _repo.SoftDeleteUser(userId, user);
