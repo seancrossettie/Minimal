@@ -15,7 +15,15 @@ namespace Minimal.Controllers
             _repo = repo;
         }
 
-        [HttpGet]
+        [HttpPost("createUser")]
+        public IActionResult CreateNewUser(User newUser)
+        {
+            _repo.CreateNewUser(newUser);
+
+            return Created($"/api/users/{newUser.UserId}", newUser);
+        }
+
+        [HttpGet("getAllUsers")]
         public IActionResult GetAllUsers()
         {
             return Ok(_repo.GetAllUsers());
@@ -27,12 +35,19 @@ namespace Minimal.Controllers
             return Ok(_repo.GetUserById(userId));
         }
 
-        [HttpPost]
-        public IActionResult CreateNewUser(User newUser)
+        [HttpPut("updateUser/{userId}")]
+        public IActionResult UpdateUser(Guid userId, User user)
         {
-            _repo.CreateNewUser(newUser);
+            var userToUpdate = _repo.GetUserById(userId);
 
-            return Created($"/api/users/{newUser.UserId}", newUser);
+            if (userToUpdate == null)
+            {
+                return NotFound($"Could not find user with the id {userId} for updating");
+            }
+
+            var updatedUser = _repo.UpdateUser(userId, user);
+
+            return Ok(updatedUser);
         }
 
         [HttpPut("softDelete/{userId}")]
@@ -56,21 +71,6 @@ namespace Minimal.Controllers
             _repo.HardDeleteUser(userId);
 
             return Ok();
-        }
-
-        [HttpPut("updateUser/{userId}")]
-        public IActionResult UpdateUser(Guid userId, User user)
-        {
-            var userToUpdate = _repo.GetUserById(userId);
-            
-            if (userToUpdate == null)
-            {
-                return NotFound($"Could not find user with the id {userId} for updating");
-            }
-
-            var updatedUser = _repo.UpdateUser(userId, user);
-
-            return Ok(updatedUser);
         }
     }
 }

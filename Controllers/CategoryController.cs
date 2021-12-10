@@ -16,16 +16,18 @@ namespace Minimal.Controllers
             _repo = repo;
         }
 
-        [HttpGet]
+        [HttpPost("createCategory")]
+        public IActionResult CreateNewCategory(Category newCategory)
+        {
+            _repo.CreateNewCategory(newCategory);
+
+            return Created($"/api/categories/{newCategory.CategoryId}", newCategory);
+        }
+
+        [HttpGet("getAllCategories")]
         public IActionResult GetAllCategories()
         {
             return Ok(_repo.GetAllCategories());
-        }
-
-        [HttpGet("getCategoryByName/{categoryName}")]
-        public IActionResult GetCategoryByName(String categoryName)
-        {
-            return Ok(_repo.GetCategoryByName(categoryName));
         }
 
         [HttpGet("getCategoryById/{categoryId}")]
@@ -34,21 +36,12 @@ namespace Minimal.Controllers
             return Ok(_repo.GetCategoryById(categoryId));
         }
 
-        [HttpPost]
-        public IActionResult CreateNewCategory(Category newCategory)
+        [HttpGet("getCategoryByName/{categoryName}")]
+        public IActionResult GetCategoryByName(String categoryName)
         {
-            _repo.CreateNewCategory(newCategory);
-
-            return Created($"/api/categories/{newCategory.CategoryId}", newCategory);
+            return Ok(_repo.GetCategoryByName(categoryName));
         }
 
-        [HttpDelete("deleteCategory/{categoryId}")]
-        public IActionResult DeleteCategory(Guid categoryId)
-        {
-            _repo.DeleteCategory(categoryId);
-
-            return Ok();
-        }
 
         [HttpPut("updateCategory/{categoryId}")]
         public IActionResult UpdateCategory(Guid categoryId, Category category)
@@ -63,6 +56,14 @@ namespace Minimal.Controllers
             var updatedCategory = _repo.UpdateCategory(categoryId, category);
 
             return Ok(updatedCategory);
+        }
+
+        [HttpDelete("deleteCategory/{categoryId}")]
+        public IActionResult DeleteCategory(Guid categoryId)
+        {
+            _repo.DeleteCategory(categoryId);
+
+            return Ok();
         }
     }
 }

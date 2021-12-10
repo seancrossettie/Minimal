@@ -10,13 +10,20 @@ namespace Minimal.Controllers
     public class ItemController : ControllerBase
     {
         readonly ItemRepository _repo;
-
         public ItemController(ItemRepository repo)
         {
             _repo = repo;
         }
 
-        [HttpGet]
+        [HttpPost("createItem")]
+        public IActionResult CreateItem(Item newItem)
+        {
+            _repo.CreateItem(newItem);
+
+            return Created($"/api/items/{newItem.ItemId}", newItem);
+        }
+
+        [HttpGet("getAllItems")]
         public IActionResult GetAllItems()
         {
             return Ok(_repo.GetAllItems());
@@ -34,35 +41,22 @@ namespace Minimal.Controllers
             return Ok(_repo.GetItemByName(itemName));
         }
 
-        [HttpPost]
-        public IActionResult CreateItem(Item newItem)
+        [HttpGet("getDuplicateItems")]
+        public IActionResult GetDuplicateItems()
         {
-            _repo.CreateItem(newItem);
-
-            return Created($"/api/items/{newItem.ItemId}", newItem);
+            return Ok(_repo.GetDuplicateItems());
         }
 
-        [HttpPut("removeItem/{itemId}")]
-        public IActionResult RemoveItem(Guid itemId, Item item)
+        [HttpGet("getFiveMostUselessItems")]
+        public IActionResult GetFiveMostUslessItems()
         {
-            var itemToRemove = _repo.GetItemById(itemId);
-
-
-            if (itemToRemove == null)
-            {
-                return NotFound($"Could not find item with the id {itemId} for removal");
-            }
-
-            var removedItem = _repo.RemoveItem(itemId, item);
-
-            return Ok(removedItem);
+            return Ok(_repo.GetFiveMostUselessItems());
         }
 
         [HttpPut("updateItem/{itemId}")]
         public IActionResult UpdateItem(Guid itemId, Item item)
         {
             var itemToUpdate = _repo.GetItemById(itemId);
-
 
             if (itemToUpdate == null)
             {
@@ -72,6 +66,21 @@ namespace Minimal.Controllers
             var updatedItem = _repo.UpdateItem(itemId, item);
 
             return Ok(updatedItem);
+        }
+
+        [HttpPut("removeItem/{itemId}")]
+        public IActionResult RemoveItem(Guid itemId, Item item)
+        {
+            var itemToRemove = _repo.GetItemById(itemId);
+
+            if (itemToRemove == null)
+            {
+                return NotFound($"Could not find item with the id {itemId} for removal");
+            }
+
+            var removedItem = _repo.RemoveItem(itemId, item);
+
+            return Ok(removedItem);
         }
 
         [HttpDelete("deleteItem/{itemId}")]
