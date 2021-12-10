@@ -13,29 +13,6 @@ namespace Minimal.DataAccess
         {
             _connectionString = config.GetConnectionString("Minimal");
         }
-
-        internal object GetAllCategories()
-        {
-            using var db = new SqlConnection(_connectionString);
-            var allCategories = db.Query<Category>(@"SELECT * FROM Category");
-            return allCategories;
-        }
-
-        internal object GetCategoryByName(string categoryName)
-        {
-            string likeString = "%" + categoryName + "%";
-            using var db = new SqlConnection(_connectionString);
-            var namedCategory = db.Query<Category>(@"SELECT * FROM Category c WHERE c.categoryName LIKE @likeString", new { likeString });
-            return namedCategory;
-        }
-
-        internal object GetCategoryById(Guid categoryId)
-        {
-            using var db = new SqlConnection(_connectionString);
-            var selectedCategory = db.QueryFirstOrDefault<Category>(@"SELECT * FROM Category WHERE categoryId = @categoryId", new { categoryId });
-            return selectedCategory;
-        }
-
         internal void CreateNewCategory(Category newCategory)
         {
             using var db = new SqlConnection(_connectionString);
@@ -46,13 +23,30 @@ namespace Minimal.DataAccess
             var id = db.ExecuteScalar<Guid>(sql, newCategory);
             newCategory.CategoryId = id;
         }
-
+        internal object GetAllCategories()
+        {
+            using var db = new SqlConnection(_connectionString);
+            var allCategories = db.Query<Category>(@"SELECT * FROM Category");
+            return allCategories;
+        }
+        internal object GetCategoryByName(string categoryName)
+        {
+            string likeString = "%" + categoryName + "%";
+            using var db = new SqlConnection(_connectionString);
+            var namedCategory = db.Query<Category>(@"SELECT * FROM Category c WHERE c.categoryName LIKE @likeString", new { likeString });
+            return namedCategory;
+        }
+        internal object GetCategoryById(Guid categoryId)
+        {
+            using var db = new SqlConnection(_connectionString);
+            var selectedCategory = db.QueryFirstOrDefault<Category>(@"SELECT * FROM Category WHERE categoryId = @categoryId", new { categoryId });
+            return selectedCategory;
+        }
         internal void DeleteCategory(Guid categoryId)
         {
             using var db = new SqlConnection(_connectionString);
             var deletedCategory= db.Execute(@"DELETE FROM Category WHERE categoryId = @categoryId", new { categoryId });
         }
-
         internal object UpdateCategory(Guid categoryId, Category category)
         {
             using var db = new SqlConnection(_connectionString);

@@ -13,22 +13,6 @@ namespace Minimal.DataAccess
         {
             _connectionString = config.GetConnectionString("Minimal");
         }
-
-        internal object GetAllItems()
-        {
-            using var db = new SqlConnection(_connectionString);
-            var items = db.Query<Item>(@"SELECT * FROM Item");
-            return items;
-        }
-
-        internal object GetItemById(Guid itemId)
-        {
-            using var db = new SqlConnection(_connectionString);
-            var item = db.Query<Item>(@"SELECT * FROM Item WHERE itemId = @itemId", new { itemId });
-            if (item == null) return null;
-            return item;
-        }
-
         internal void CreateItem(Item newItem)
         {
             using var db = new SqlConnection(_connectionString);
@@ -39,7 +23,19 @@ namespace Minimal.DataAccess
             var id = db.ExecuteScalar<Guid>(sql, newItem);
             newItem.ItemId = id;
         }
-
+        internal object GetAllItems()
+        {
+            using var db = new SqlConnection(_connectionString);
+            var items = db.Query<Item>(@"SELECT * FROM Item");
+            return items;
+        }
+        internal object GetItemById(Guid itemId)
+        {
+            using var db = new SqlConnection(_connectionString);
+            var item = db.Query<Item>(@"SELECT * FROM Item WHERE itemId = @itemId", new { itemId });
+            if (item == null) return null;
+            return item;
+        }
         internal object GetItemByName(string itemName)
         {
             string likeString = "%" + itemName + "%";
@@ -47,28 +43,22 @@ namespace Minimal.DataAccess
             var namedItem = db.Query<Item>(@"SELECT * FROM Item i WHERE i.itemName LIKE @likeString", new { likeString });
             return namedItem;
         }
-
-        internal object RemoveItem(Guid itemId, Item item)
+        internal object GetDuplicateItems()
         {
             using var db = new SqlConnection(_connectionString);
-            var sql = @"UPDATE Item
-                        SET
-                        userId = @userId,
-                        itemName = @itemName,
-                        itemDescription = @itemDescription,
-                        timeOwned = @timeOwned,
-                        quantity = @quantity,
-                        isDuplicate = @isDuplicate,
-                        isRemoved = 0,
-                        necessityRank = @necessityRank
-                        WHERE itemId = @itemId";
-            item.ItemId = itemId;
-
-            var removedItem = db.QueryFirstOrDefault<User>(sql, item);
-
-            return removedItem;
+            var duplicateItems = db.Query<Item>(@"SELECT * FROM Item i Where i.isDuplicate = 1");
+            if (duplicateItems == null) return null;
+            return duplicateItems;
         }
-
+        internal object GetFiveMostUselessItems()
+        {
+            using var db = new SqlConnection(_connectionString);
+            var sql = @"SELECT TOP 5 * FROM Item
+                        ORDER BY necessityRank ASC";
+            var fiveMostUseless = db.Query<Item>(sql);
+            if (fiveMostUseless == null) return null;
+            return fiveMostUseless;
+        }
         internal object UpdateItem(Guid itemId, Item item)
         {
             using var db = new SqlConnection(_connectionString);
@@ -89,7 +79,26 @@ namespace Minimal.DataAccess
 
             return updatedItem;
         }
+        internal object RemoveItem(Guid itemId, Item item)
+        {
+            using var db = new SqlConnection(_connectionString);
+            var sql = @"UPDATE Item
+                        SET
+                        userId = @userId,
+                        itemName = @itemName,
+                        itemDescription = @itemDescription,
+                        timeOwned = @timeOwned,
+                        quantity = @quantity,
+                        isDuplicate = @isDuplicate,
+                        isRemoved = 0,
+                        necessityRank = @necessityRank
+                        WHERE itemId = @itemId";
+            item.ItemId = itemId;
 
+            var removedItem = db.QueryFirstOrDefault<User>(sql, item);
+
+            return removedItem;
+        }
         internal void DeleteItem(Guid itemId)
         {
             using var db = new SqlConnection(_connectionString);

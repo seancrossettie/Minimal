@@ -13,22 +13,6 @@ namespace Minimal.DataAccess
         {
             _connectionString = config.GetConnectionString("Minimal");
         }
-
-        internal object GetAllUsers()
-        {
-            using var db = new SqlConnection(_connectionString);
-            var users = db.Query<User>(@"SELECT * FROM Users");
-            return users;
-        }
-
-        internal object GetUserById(Guid userId)
-        {
-            using var db = new SqlConnection(_connectionString);
-            var user = db.Query<User>(@"SELECT * FROM Users WHERE userId = @userId", new { userId });
-            if (user == null) return null;
-            return user;
-        }
-
         internal void CreateNewUser(User newUser)
         {
             using var db = new SqlConnection(_connectionString);
@@ -39,33 +23,19 @@ namespace Minimal.DataAccess
             var id = db.ExecuteScalar<Guid>(sql, newUser);
             newUser.UserId = id;
         }
-
-        internal object SoftDeleteUser(Guid userId, User user)
+        internal object GetAllUsers()
         {
             using var db = new SqlConnection(_connectionString);
-            var sql = @"UPDATE Users
-                        SET
-                        firstName = @firstName,
-                        lastName = @lastName,
-                        email = @email,
-                        userGoalTier = 4,
-                        totalItemsOwned = @totalItemsOwned,
-                        totalItemsRemoved = @totalItemsRemoved
-                        WHERE userId = @userId";
-            user.UserId = userId;
-            
-            var softDeletedUser = db.QueryFirstOrDefault<User>(sql, user);
-
-            return softDeletedUser;
+            var users = db.Query<User>(@"SELECT * FROM Users");
+            return users;
         }
-
-        internal void HardDeleteUser(Guid userId)
+        internal object GetUserById(Guid userId)
         {
             using var db = new SqlConnection(_connectionString);
-
-            db.Execute(@"DELETE FROM Users WHERE userId = @userId", new { userId });
+            var user = db.Query<User>(@"SELECT * FROM Users WHERE userId = @userId", new { userId });
+            if (user == null) return null;
+            return user;
         }
-
         internal object UpdateUser(Guid userId, User user)
         {
             using var db = new SqlConnection(_connectionString);
@@ -84,6 +54,30 @@ namespace Minimal.DataAccess
             var updatedUser = db.QueryFirstOrDefault<User>(sql, user);
 
             return updatedUser;
+        }
+        internal object SoftDeleteUser(Guid userId, User user)
+        {
+            using var db = new SqlConnection(_connectionString);
+            var sql = @"UPDATE Users
+                        SET
+                        firstName = @firstName,
+                        lastName = @lastName,
+                        email = @email,
+                        userGoalTier = 4,
+                        totalItemsOwned = @totalItemsOwned,
+                        totalItemsRemoved = @totalItemsRemoved
+                        WHERE userId = @userId";
+            user.UserId = userId;
+            
+            var softDeletedUser = db.QueryFirstOrDefault<User>(sql, user);
+
+            return softDeletedUser;
+        }
+        internal void HardDeleteUser(Guid userId)
+        {
+            using var db = new SqlConnection(_connectionString);
+
+            db.Execute(@"DELETE FROM Users WHERE userId = @userId", new { userId });
         }
     }
 }
