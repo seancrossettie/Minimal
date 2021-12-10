@@ -43,6 +43,7 @@ namespace Minimal.DataAccess
             var namedItem = db.Query<Item>(@"SELECT * FROM Item i WHERE i.itemName LIKE @likeString", new { likeString });
             return namedItem;
         }
+
         internal object GetDuplicateItems()
         {
             using var db = new SqlConnection(_connectionString);
@@ -58,6 +59,15 @@ namespace Minimal.DataAccess
             var fiveMostUseless = db.Query<Item>(sql);
             if (fiveMostUseless == null) return null;
             return fiveMostUseless;
+        }
+        internal object GetPageItems(int pageNumber)
+        {
+            using var db = new SqlConnection(_connectionString);
+            var sql = @"SELECT * FROM Item ORDER BY itemName
+                        OFFSET (@pageNumber - 1) * 10 ROWS
+                        FETCH NEXT 10 ROWS ONLY";
+            var pageItems = db.Query<Item>(sql, new { pageNumber });
+            return pageItems;
         }
         internal object UpdateItem(Guid itemId, Item item)
         {

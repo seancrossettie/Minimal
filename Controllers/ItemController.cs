@@ -53,6 +53,12 @@ namespace Minimal.Controllers
             return Ok(_repo.GetFiveMostUselessItems());
         }
 
+        [HttpGet("getPageItems/page={pageNumber}")]
+        public IActionResult GetPageItems(int pageNumber)
+        {
+            return Ok(_repo.GetPageItems(pageNumber));
+        }
+
         [HttpPut("updateItem/{itemId}")]
         public IActionResult UpdateItem(Guid itemId, Item item)
         {
