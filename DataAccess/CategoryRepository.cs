@@ -25,14 +25,14 @@ namespace Minimal.DataAccess
         {
             string likeString = "%" + categoryName + "%";
             using var db = new SqlConnection(_connectionString);
-            var namedCategory = db.Query<Category>(@"SELECT * FROM Category c WHERE c.categoryName LIKE @likeString", new { likeString = likeString });
+            var namedCategory = db.Query<Category>(@"SELECT * FROM Category c WHERE c.categoryName LIKE @likeString", new { likeString });
             return namedCategory;
         }
 
         internal object GetCategoryById(Guid categoryId)
         {
             using var db = new SqlConnection(_connectionString);
-            var selectedCategory = db.QueryFirstOrDefault<Category>(@"SELECT * FROM Category WHERE categoryId = @categoryId", new { categoryId = categoryId });
+            var selectedCategory = db.QueryFirstOrDefault<Category>(@"SELECT * FROM Category WHERE categoryId = @categoryId", new { categoryId });
             return selectedCategory;
         }
 

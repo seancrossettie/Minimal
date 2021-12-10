@@ -24,7 +24,7 @@ namespace Minimal.DataAccess
         internal object GetUserById(Guid userId)
         {
             using var db = new SqlConnection(_connectionString);
-            var user = db.Query<User>(@"SELECT * FROM Users WHERE userId = @userId", new { userId = userId });
+            var user = db.Query<User>(@"SELECT * FROM Users WHERE userId = @userId", new { userId });
             if (user == null) return null;
             return user;
         }
