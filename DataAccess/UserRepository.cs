@@ -63,7 +63,7 @@ namespace Minimal.DataAccess
         {
             using var db = new SqlConnection(_connectionString);
 
-            db.Execute("DELETE FROM Users WHERE userId = @userId", new { userId });
+            db.Execute(@"DELETE FROM Users WHERE userId = @userId", new { userId });
         }
 
         internal object UpdateUser(Guid userId, User user)
@@ -84,7 +84,6 @@ namespace Minimal.DataAccess
             var updatedUser = db.QueryFirstOrDefault<User>(sql, user);
 
             return updatedUser;
-
         }
     }
 }

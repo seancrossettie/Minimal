@@ -21,7 +21,7 @@ namespace Minimal.Controllers
             return Ok(_repo.GetAllUsers());
         }
 
-        [HttpGet("{userId}")]
+        [HttpGet("getUserById/{userId}")]
         public IActionResult GetUserById(Guid userId)
         {
             return Ok(_repo.GetUserById(userId));
@@ -35,7 +35,7 @@ namespace Minimal.Controllers
             return Created($"/api/users/{newUser.UserId}", newUser);
         }
 
-        [HttpPut("softdelete/{userId}")]
+        [HttpPut("softDelete/{userId}")]
         public IActionResult SoftDeleteUser(Guid userId, User user)
         {
             var userToSoftDelete = _repo.GetUserById(userId);
@@ -50,7 +50,7 @@ namespace Minimal.Controllers
             return Ok(softDeletedUser);
         }
 
-        [HttpDelete("delete/{userId}")]
+        [HttpDelete("deleteUser/{userId}")]
         public IActionResult DeleteUser(Guid userId)
         {
             _repo.HardDeleteUser(userId);
@@ -58,7 +58,7 @@ namespace Minimal.Controllers
             return Ok();
         }
 
-        [HttpPut("update/{userId}")]
+        [HttpPut("updateUser/{userId}")]
         public IActionResult UpdateUser(Guid userId, User user)
         {
             var userToUpdate = _repo.GetUserById(userId);
