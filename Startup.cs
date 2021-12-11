@@ -25,6 +25,7 @@ namespace Minimal
             services.AddTransient<UserRepository>();
             services.AddTransient<CategoryRepository>();
             services.AddTransient<ItemRepository>();
+            services.AddTransient<CategoryItemRepository>();
 
             services.AddControllers()
                 .AddJsonOptions(opts =>
