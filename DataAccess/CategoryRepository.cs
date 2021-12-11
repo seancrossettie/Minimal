@@ -42,11 +42,6 @@ namespace Minimal.DataAccess
             var selectedCategory = db.QueryFirstOrDefault<Category>(@"SELECT * FROM Category WHERE categoryId = @categoryId", new { categoryId });
             return selectedCategory;
         }
-        internal void DeleteCategory(Guid categoryId)
-        {
-            using var db = new SqlConnection(_connectionString);
-            var deletedCategory= db.Execute(@"DELETE FROM Category WHERE categoryId = @categoryId", new { categoryId });
-        }
         internal object UpdateCategory(Guid categoryId, Category category)
         {
             using var db = new SqlConnection(_connectionString);
@@ -64,6 +59,11 @@ namespace Minimal.DataAccess
             var updatedCategory = db.QueryFirstOrDefault<User>(sql, category);
 
             return updatedCategory;
+        }
+        internal void DeleteCategory(Guid categoryId)
+        {
+            using var db = new SqlConnection(_connectionString);
+            var deletedCategory = db.Execute(@"DELETE FROM Category WHERE categoryId = @categoryId", new { categoryId });
         }
     }
 }
