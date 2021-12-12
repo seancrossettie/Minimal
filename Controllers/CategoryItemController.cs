@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Minimal.DataAccess;
 using Minimal.Models;
@@ -7,7 +8,7 @@ namespace Minimal.Controllers
 {
     [Route("api/categoryItems")]
     [ApiController]
-    public class CategoryItemController : ControllerBase
+    public class CategoryItemController : FireBaseController
     {
         readonly CategoryItemRepository _repo;
         

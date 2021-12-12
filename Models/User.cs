@@ -14,11 +14,9 @@ namespace Minimal.Models
 
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public UserGoalTier UserGoalTier { get; set; }
-
         public Int16 TotalItemsOwned { get; set; } = 0;
         public Int16 TotalItemsRemoved { get; set; } = 0;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-
     }
 
     public enum UserGoalTier
