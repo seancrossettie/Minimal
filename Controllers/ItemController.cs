@@ -7,7 +7,7 @@ namespace Minimal.Controllers
 {
     [Route("api/items")]
     [ApiController]
-    public class ItemController : ControllerBase
+    public class ItemController : FireBaseController
     {
         readonly ItemRepository _repo;
         public ItemController(ItemRepository repo)

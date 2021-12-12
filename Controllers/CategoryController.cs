@@ -7,7 +7,7 @@ namespace Minimal.Controllers
 {
     [Route("api/categories")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class CategoryController : FireBaseController
     {
         readonly CategoryRepository _repo;
 

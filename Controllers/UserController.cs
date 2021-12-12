@@ -7,7 +7,7 @@ namespace Minimal.Controllers
 {
     [Route("api/users")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : FireBaseController
     {
         readonly UserRepository _repo;
         public UserController(UserRepository repo)

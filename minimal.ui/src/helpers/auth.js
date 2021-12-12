@@ -27,7 +27,7 @@ const signInUser = () => {
   firebase.auth().signInWithPopup(provider).then((user) => {
       if (user.additionalUserInfo?.isNewUser) {
         const userInfo = {
-          firebaseKey: user.user?.uid
+          FirebaseKey: user.user?.uid
         };
 
         createNewUser(userInfo);

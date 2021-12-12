@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { signInUser } from "../../helpers/auth";
-import getAllItems from "../../helpers/data/itemData.js"
 
 function App() {
   const [user, setUser] = useState([]);
@@ -17,7 +16,6 @@ function App() {
         setUser(false);
       }
     });
-    getAllItems().then(r => console.warn(r))
   }, []);
 
   return (

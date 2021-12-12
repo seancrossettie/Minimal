@@ -1,9 +1,11 @@
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Minimal.DataAccess;
 
@@ -18,7 +20,6 @@ namespace Minimal
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IConfiguration>(Configuration);
@@ -34,13 +35,27 @@ namespace Minimal
                     opts.JsonSerializerOptions.Converters.Add(enumConverter);
                 });
 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                     .AddJwtBearer(options =>
+                     {
+                         options.IncludeErrorDetails = true;
+                         options.Authority = "https://securetoken.google.com/minimal-62830";
+                         options.TokenValidationParameters = new TokenValidationParameters
+                         {
+                             ValidateLifetime = true,
+                             ValidateAudience = true,
+                             ValidateIssuer = true,
+                             ValidAudience = "minimal-62830",
+                             ValidIssuer = "https://securetoken.google.com/minimal-62830"
+                         };
+                     });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Minimal", Version = "v1" });
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -55,6 +70,8 @@ namespace Minimal
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

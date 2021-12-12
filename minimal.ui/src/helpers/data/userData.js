@@ -3,7 +3,10 @@ import config from "../config";
 
 const createNewUser = (user) => new Promise((resolve, reject) => {
     axios.post(`${config.baseUrl}/api/users/createUser`, user)
-    .then(response => resolve(response.data))
+    .then(response => { 
+        resolve(response.data);
+        console.warn(response.data);
+    })
     .catch(error => reject(error));
 });
 
