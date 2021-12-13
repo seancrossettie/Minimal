@@ -2,10 +2,11 @@ import { Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
-import { signInUser } from "../../helpers/auth";
+import { signInUser, signOutUser } from "../../helpers/auth";
+import { getAllUsers } from "../../helpers/data/userData";
 
 function App() {
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((authed) => {
@@ -16,12 +17,16 @@ function App() {
         setUser(false);
       }
     });
+    getAllUsers().then(r => console.warn(r));
   }, []);
 
   return (
     <div className="App">
-        <Button outline onClick={() => signInUser()}>Sign In</Button>
-        <Button outline onClick={() => console.warn(user)}>Test</Button>
+      { user
+        ? <Button outline onClick={() => signOutUser()}>Sign Out</Button>
+        : <Button outline onClick={() => signInUser(setUser)}>Sign In</Button>
+      }
+      <Button outline onClick={() => console.warn(user.multiFactor.user.uid)}>Test</Button>
     </div>
   );
 }
