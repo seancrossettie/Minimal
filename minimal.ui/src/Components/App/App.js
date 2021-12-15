@@ -26,7 +26,6 @@ function App() {
         ? <Button outline onClick={() => signOutUser()}>Sign Out</Button>
         : <Button outline onClick={() => signInUser(setUser)}>Sign In</Button>
       }
-      <Button outline onClick={() => console.warn(user.multiFactor.user.uid)}>Test</Button>
     </div>
   );
 }

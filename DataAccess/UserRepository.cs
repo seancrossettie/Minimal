@@ -16,9 +16,9 @@ namespace Minimal.DataAccess
         internal void CreateNewUser(User newUser)
         {
             using var db = new SqlConnection(_connectionString);
-            var sql = @"INSERT INTO Users(firstName, lastName, email, userGoalTier, totalItemsOwned, totalItemsRemoved)
+            var sql = @"INSERT INTO Users(firstName, lastName, email, userGoalTier, totalItemsOwned, totalItemsRemoved, firebaseKey)
                         OUTPUT inserted.userId
-                        VALUES(@firstName, @lastName, @email, @userGoalTier, @totalItemsOwned, @totalItemsRemoved)";
+                        VALUES(@firstName, @lastName, @email, @userGoalTier, @totalItemsOwned, @totalItemsRemoved, @firebaseKey)";
 
             var id = db.ExecuteScalar<Guid>(sql, newUser);
             newUser.UserId = id;
