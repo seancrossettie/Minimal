@@ -3,12 +3,13 @@ import config from "../config";
 
 const createNewUser = (user) => new Promise((resolve, reject) => {
     axios.post(`${config.baseUrl}/api/users/createUser`, user)
-    .then(response => { 
-        resolve(response.data);
-        console.warn(response.data);
-    })
-    .catch(error => reject(error));
+    .then(response => resolve(response.data)).catch(reject);
 });
 
-export default createNewUser;
+const getAllUsers = () => new Promise((resolve, reject) => {
+    axios.get(`${config.baseUrl}/api/users/getAllUsers`)
+    .then(response => resolve(response.data)).catch(reject);
+});
+
+export { createNewUser, getAllUsers };
 
