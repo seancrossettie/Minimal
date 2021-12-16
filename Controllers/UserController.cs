@@ -35,6 +35,12 @@ namespace Minimal.Controllers
             return Ok(_repo.GetUserById(userId));
         }
 
+        [HttpGet("getUserByFirebaseKey/{firebaseKey}")]
+        public IActionResult GetUserByFirebaseKey(String firebaseKey)
+        {
+            return Ok(_repo.GetUserByFirebaseKey(firebaseKey));
+        }
+
         [HttpPut("updateUser/{userId}")]
         public IActionResult UpdateUser(Guid userId, User user)
         {

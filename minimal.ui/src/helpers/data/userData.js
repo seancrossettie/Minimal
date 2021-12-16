@@ -11,5 +11,10 @@ const getAllUsers = () => new Promise((resolve, reject) => {
     .then(response => resolve(response.data)).catch(reject);
 });
 
-export { createNewUser, getAllUsers };
+const getUserByFirebaseKey = (firebaseKey) => new Promise((resolve, reject) => {
+    axios.get(`${config.baseUrl}/api/users/getUserByFirebaseKey/${firebaseKey}`)
+    .then(response => resolve(response.data)).catch(reject);
+})
+
+export { createNewUser, getAllUsers, getUserByFirebaseKey };
 

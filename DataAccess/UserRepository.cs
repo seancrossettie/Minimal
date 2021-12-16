@@ -36,6 +36,13 @@ namespace Minimal.DataAccess
             if (user == null) return null;
             return user;
         }
+        internal object GetUserByFirebaseKey(string firebaseKey)
+        {
+            using var db = new SqlConnection(_connectionString);
+            var user = db.Query<User>(@"SELECT * FROM Users WHERE firebaseKey = @firebaseKey", new { firebaseKey });
+            if (user == null) return null;
+            return user;
+        }
         internal object UpdateUser(Guid userId, User user)
         {
             using var db = new SqlConnection(_connectionString);
@@ -76,7 +83,7 @@ namespace Minimal.DataAccess
         internal void HardDeleteUser(Guid userId)
         {
             using var db = new SqlConnection(_connectionString);
-
+    
             db.Execute(@"DELETE FROM Users WHERE userId = @userId", new { userId });
         }
     }
