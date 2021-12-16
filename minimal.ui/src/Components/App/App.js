@@ -4,6 +4,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import { signInUser, signOutUser } from "../../helpers/auth";
 import { getUserByFirebaseKey } from "../../helpers/data/userData";
+import Router from "../../helpers/Router";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -25,7 +26,7 @@ function App() {
         ? <Button outline onClick={() => signOutUser()}>Sign Out</Button>
         : <Button outline onClick={() => signInUser(setUser)}>Sign In</Button>
       }
-      <Button outline onClick={() => console.warn(user)}>Test</Button>
+      <Router />
     </div>
   );
 }

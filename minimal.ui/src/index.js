@@ -6,14 +6,17 @@ import { ChakraProvider } from "@chakra-ui/react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import firebaseConfig from "./helpers/apiKeys";
+import { BrowserRouter } from "react-router-dom";
 
 firebase.initializeApp(firebaseConfig);
 
 ReactDOM.render(
   <React.StrictMode>
-    <ChakraProvider>
-      <App />
-    </ChakraProvider>
+    <BrowserRouter>
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );
