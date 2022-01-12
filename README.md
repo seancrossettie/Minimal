@@ -1,4 +1,6 @@
 # Minimal API
+This api serves as the database for Minimal, the frontend app that I created for my fullstack capstone for NSS. Feel free to checkout Minimal at the link below.
+https://github.com/seancrossettie/Minimal.ui
 
 # ERD
 https://dbdiagram.io/d/6111cb572ecb310fc3c43f74
