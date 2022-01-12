@@ -1,5 +1,5 @@
 # Minimal API
-This api serves as the database for Minimal, the frontend app that I created for my fullstack capstone for NSS. Feel free to checkout Minimal at the link below.
+This api serves as the database for Minimal, the frontend app that I created for my fullstack capstone for NSS. Feel free to checkout Minimal at here ->
 https://github.com/seancrossettie/Minimal.ui
 
 # ERD
